@@ -6,8 +6,8 @@ object Boot extends App {
   val bus      = new FakeBus
   val storage  = new InMemEventStore(bus.publish)
   val repo     = new EventStoreRepository[InventoryItem](storage)
-  val commands = new InventoryCommandHandlers(repo)
 
+  val commands = new InventoryCommandHandlers(repo)
   bus.registerHandler[CheckInItemsToInventory](commands.handle)
   bus.registerHandler[CreateInventoryItem](commands.handle)
   bus.registerHandler[DeactivateInventoryItem](commands.handle)
@@ -20,7 +20,7 @@ object Boot extends App {
   bus.registerHandler[ItemsRemovedFromInventory](detail.handle)
   bus.registerHandler[ItemsCheckedInToInventory](detail.handle)
   bus.registerHandler[InventoryItemDeactivated](detail.handle)
-
+  bus.registerHandler[InventoryItemRenamed](detail.handle)
 
   val list = new InventoryListView
   bus.registerHandler[InventoryItemCreated](list.handle)
